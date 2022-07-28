@@ -1,0 +1,16 @@
+{
+  "name": "audio-visualization",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export",
+    "start": "ws --port 9999"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.34.3",
+    "@slidev/theme-default": "*",
+    "@slidev/theme-seriph": "*",
+    "local-web-server": "^5.2.1"
+  }
+}

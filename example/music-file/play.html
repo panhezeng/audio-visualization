@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>通过 Web Audio API 播放音频</title>
+</head>
+<body>
+<div>
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+</div>
+<div>
+</div>
+<script>
+
+    const play = document.querySelector("#play");
+    const pause = document.querySelector("#pause");
+    play.setAttribute('disabled', 'disabled');
+    pause.setAttribute('disabled', 'disabled');
+
+    const audioContext = new AudioContext();
+    const source = audioContext.createBufferSource();
+    source.connect(audioContext.destination);
+    fetch('./Advertime.mp3').then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+        }
+        return response.arrayBuffer();
+    })
+        .then((buffer) => audioContext.decodeAudioData(buffer))
+        .then((decodedData) => {
+            source.buffer = decodedData;
+            play.removeAttribute('disabled')
+        });
+
+    play.addEventListener("click", function () {
+        play.setAttribute('disabled', 'disabled');
+        pause.removeAttribute('disabled');
+
+        // The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+        audioContext.resume();
+        source.start();
+    }, false);
+    pause.addEventListener("click", function () {
+        play.removeAttribute('disabled');
+        pause.setAttribute('disabled', 'disabled');
+
+        source.stop();
+    }, false);
+</script>
+</body>
+</html>
